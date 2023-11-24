@@ -34,6 +34,13 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
+      file_id: {
+        type: Sequelize.INTEGER,
+        references: { model: "files", key: "id" },
+        defaultValue: 1,
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
     });
   },
 

@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User";
+import File from "../models/File";
 
 import authConfig from "../../config/auth";
 
@@ -19,6 +20,10 @@ class SessionController {
       return res.status(401).json({ error: "Password not match." });
     }
 
+    const file = await File.findOne({
+      where: { id: user.file_id },
+    });
+
     const { id, name } = user;
 
     return res.json({
@@ -27,6 +32,7 @@ class SessionController {
         name,
         email,
       },
+      file: file.path,
       token: jwt.sign({ id }, authConfig.secret, {
         expiresIn: authConfig.expiresIn,
       }),
